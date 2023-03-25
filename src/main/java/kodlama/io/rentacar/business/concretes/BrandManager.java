@@ -3,50 +3,49 @@ package kodlama.io.rentacar.business.concretes;
 import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.repository.BrandRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+
+@AllArgsConstructor
 public class BrandManager implements BrandService {
-    @Autowired
     private final BrandRepository repository;
 
-
-    public BrandManager(BrandRepository repository) {
-        this.repository = repository;
-    }
     @Override
     public List<Brand> getAll() {
-        if(repository.getAll().size() == 0 ) throw new RuntimeException("Kayıtlı marka yok!!");
-
-        return repository.getAll();
-
-
+        return repository.findAll();
     }
+
     @Override
     public Brand getById(int id) {
-        return repository.getById(id);
+        checkIfBrandExists(id);
+        return repository.findById(id).orElseThrow();
     }
 
     @Override
     public Brand add(Brand brand) {
-        return repository.add(brand);
+        return repository.save(brand);
     }
 
     @Override
     public Brand update(int id, Brand brand) {
-        return repository.update(id, brand);
+        checkIfBrandExists(id);
+        brand.setId(id);
+        return repository.save(brand);
     }
 
     @Override
     public void delete(int id) {
-repository.delete(id);
+        checkIfBrandExists(id);
+        repository.deleteById(id);
     }
-    //! Business Rules
 
+    // Business rules
 
-
-
+    private void checkIfBrandExists(int id) {
+        if (!repository.existsById(id)) throw new RuntimeException("Böyle bir marka mevcut değil.");
+    }
 }
