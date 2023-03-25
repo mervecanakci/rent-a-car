@@ -2,7 +2,7 @@ package kodlama.io.rentacar.business.concretes;
 
 import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.entities.concretes.Brand;
-import kodlama.io.rentacar.repository.abstracts.BrandRepository;
+import kodlama.io.rentacar.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

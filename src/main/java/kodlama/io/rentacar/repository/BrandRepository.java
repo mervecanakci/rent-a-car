@@ -1,10 +1,18 @@
-package kodlama.io.rentacar.repository.abstracts;
+package kodlama.io.rentacar.repository;
 
 import kodlama.io.rentacar.entities.concretes.Brand;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface BrandRepository extends JpaRepository<Brand, Integer> {
+ //custom queries
+    Brand getByBrandId(int brandId);
+    boolean existsByBrandName(String brandName);
+    Brand getByBrandName(String brandName);
 
-public interface BrandRepository {
+
+
+
+ /*
     //sen brand ların listesisin dedik burada: List<Brand>getAll();
     //brandların listesi gelicek getAll ı çağırdığımızda
 
@@ -13,6 +21,8 @@ public interface BrandRepository {
     Brand add(Brand brand);
     Brand update(int id, Brand brand);
     void delete(int id);
+
+  */
 
 }
 
