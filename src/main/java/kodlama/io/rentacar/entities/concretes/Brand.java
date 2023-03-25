@@ -16,10 +16,5 @@ public class Brand {
     @Column(name = "brand_name", unique = true)
     private String name;
 
-    /*
-    @OneToMany(mappedBy = "brand")
-        private List<Car> cars;
-     */
-
     }
 

@@ -4,14 +4,15 @@ import kodlama.io.rentacar.business.abstracts.BrandService;
 import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.repository.BrandRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-
 @AllArgsConstructor
 public class BrandManager implements BrandService {
+    @Autowired
     private final BrandRepository repository;
 
     @Override
