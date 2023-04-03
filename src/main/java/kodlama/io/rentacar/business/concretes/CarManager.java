@@ -7,6 +7,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreateCarResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
+import kodlama.io.rentacar.entities.concretes.Brand;
 import kodlama.io.rentacar.entities.concretes.Car;
 import kodlama.io.rentacar.repository.CarRepository;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,10 @@ public class CarManager implements CarService {
         car.setId(0); //başka id lerle karıştırmasın
         repository.save(car);
         CreateCarResponse response = mapper.map(car, CreateCarResponse.class);
+        Brand brand = mapper.map(request, Brand.class);
+
+
+
         return response;
     }
 

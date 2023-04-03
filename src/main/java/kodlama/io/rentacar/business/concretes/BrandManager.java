@@ -57,8 +57,8 @@ public class BrandManager implements BrandService {
         Brand brand = mapper.map(request, Brand.class);
         //requestteki bilgileri brand classına  döüştür ***newlemedik
         brand.setId(0); //başka id lerle karıştırmasın
-        repository.save(brand);
-        CreateBrandResponse response = mapper.map(brand, CreateBrandResponse.class);
+        Brand createBrand = repository.save(brand);
+        CreateBrandResponse response = mapper.map(createBrand, CreateBrandResponse.class);
         return response;
     }
 
@@ -82,6 +82,7 @@ public class BrandManager implements BrandService {
     // Business rules
 
     private void checkIfBrandExists(int id) {
-        if (!repository.existsById(id)) throw new RuntimeException("Böyle bir marka mevcut değil.");
+        if (!repository.existsById(id))
+            throw new RuntimeException("Böyle bir marka mevcut değil.");
     }
 }
