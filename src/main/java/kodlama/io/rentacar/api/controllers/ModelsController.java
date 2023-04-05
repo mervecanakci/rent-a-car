@@ -26,13 +26,12 @@ public class ModelsController {
     }
 
     @GetMapping("/{id}")
-    //@RequestParam kullanmadık
     public GetModelResponse getById(@PathVariable int id) {
         return service.getById(id);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED) // 201
     public CreateModelResponse add(@RequestBody CreateModelRequest request) {
         return service.add(request);
     }
@@ -43,7 +42,7 @@ public class ModelsController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NO_CONTENT) // 204
     public void delete(@PathVariable int id) {
         service.delete(id);
     }

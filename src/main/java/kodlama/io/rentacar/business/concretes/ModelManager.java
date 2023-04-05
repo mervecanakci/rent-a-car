@@ -11,14 +11,12 @@ import kodlama.io.rentacar.entities.concretes.Model;
 import kodlama.io.rentacar.repository.ModelRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 @AllArgsConstructor
 public class ModelManager implements ModelService {
-    @Autowired
     private final ModelRepository repository;
     private final ModelMapper mapper;
 
@@ -26,9 +24,8 @@ public class ModelManager implements ModelService {
     public List<GetAllModelsResponse> getAll() {
         List<Model> models = repository.findAll();
         List<GetAllModelsResponse> response = models
-                .stream()//map diye bir fonksiyon kullanmamızı sağlıyor
+                .stream()
                 .map(model -> mapper.map(model, GetAllModelsResponse.class))
-                //her bir brand i bir tane responsa çeviricek sanırım
                 .toList();
 
         return response;
@@ -36,6 +33,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
+        checkIfModelExistsById(id);
         Model model = repository.findById(id).orElseThrow();
         GetModelResponse response = mapper.map(model, GetModelResponse.class);
 
@@ -44,24 +42,41 @@ public class ModelManager implements ModelService {
 
     @Override
     public CreateModelResponse add(CreateModelRequest request) {
+        checkIfModelExistsByName(request.getName());
         Model model = mapper.map(request, Model.class);
-        model.setId(0); //başka id lerle karıştırmasın
+        model.setId(0);
         repository.save(model);
         CreateModelResponse response = mapper.map(model, CreateModelResponse.class);
+
         return response;
     }
 
     @Override
     public UpdateModelResponse update(int id, UpdateModelRequest request) {
+        checkIfModelExistsById(id);
         Model model = mapper.map(request, Model.class);
         model.setId(id);
         repository.save(model);
         UpdateModelResponse response = mapper.map(model, UpdateModelResponse.class);
+
         return response;
     }
 
     @Override
     public void delete(int id) {
+        checkIfModelExistsById(id);
+        repository.deleteById(id);
+    }
 
+    private void checkIfModelExistsById(int id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Böyle bir model mevcut değil.");
+        }
+    }
+
+    private void checkIfModelExistsByName(String name) {
+        if (repository.existsByNameIgnoreCase(name)) {
+            throw new RuntimeException("Böyle bir model sistemde kayıtlı!");
+        }
     }
 }

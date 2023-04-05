@@ -26,7 +26,6 @@ public class BrandsController {
     }
 
     @GetMapping("/{id}")
-    //@RequestParam kullanmadık
     public GetBrandResponse getById(@PathVariable int id) {
         return service.getById(id);
     }
@@ -47,4 +46,5 @@ public class BrandsController {
     public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
 }

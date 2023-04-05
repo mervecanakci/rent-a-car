@@ -21,12 +21,11 @@ public class CarsController {
     private final CarService service;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll() {
-        return service.getAll();
+    public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeMaintenance) {
+        return service.getAll(includeMaintenance);
     }
 
     @GetMapping("/{id}")
-    //@RequestParam kullanmadık
     public GetCarResponse getById(@PathVariable int id) {
         return service.getById(id);
     }

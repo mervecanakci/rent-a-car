@@ -11,5 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateModelRequest {
     private String name;
+    private int brandId;
+
 
 }

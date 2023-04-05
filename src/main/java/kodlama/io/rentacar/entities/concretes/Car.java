@@ -31,6 +31,6 @@ public class Car {
     private Model model;
 
     @OneToMany(mappedBy = "car")
-    private List<CarMaintenance> carMaintenances;
+    private List<Maintenance> maintenances;
 
 }

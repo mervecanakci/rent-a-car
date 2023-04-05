@@ -17,13 +17,12 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
     @ManyToOne
-   // @JsonManagedReference // sonsuz dögüyü engellemek için JsonIgnore kullanmadık
-    //   @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @OneToMany(mappedBy = "model")
-    //@JsonBackReference
     private List<Car> cars;
 
 }
