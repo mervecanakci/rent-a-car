@@ -4,7 +4,7 @@ import kodlama.io.rentacar.business.abstracts.CarService;
 import kodlama.io.rentacar.business.dto.requests.create.CreateCarRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateCarRequest;
 import kodlama.io.rentacar.business.dto.responses.create.CreateCarResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
+import kodlama.io.rentacar.business.dto.responses.get.all.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
 import kodlama.io.rentacar.entities.concretes.Car;
@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CarManager implements CarService {
@@ -35,7 +36,7 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
-        checkIfCarExists(id);
+        checkIfCarExistsById(id);
         Car car = repository.findById(id).orElseThrow();
         GetCarResponse response = mapper.map(car, GetCarResponse.class);
 
@@ -55,7 +56,7 @@ public class CarManager implements CarService {
 
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest request) {
-        checkIfCarExists(id);
+        checkIfCarExistsById(id);
         Car car = mapper.map(request, Car.class);
         car.setId(id);
         repository.save(car);
@@ -66,7 +67,7 @@ public class CarManager implements CarService {
 
     @Override
     public void delete(int id) {
-        checkIfCarExists(id);
+        checkIfCarExistsById(id);
         repository.deleteById(id);
     }
 
@@ -76,22 +77,32 @@ public class CarManager implements CarService {
         Car car = repository.findById(carId).orElseThrow();
         car.setState(state);
         repository.save(car);
+
     }
 
-    private void checkIfCarExists(int id) {
+    @Override
+    public double getDailyPrice(int carId) {
+   return repository.findById(carId).get().getDailyPrice();
+
+    }
+
+    private void checkIfCarExistsById(int id) {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Böyle bir araç bulunamadı!");
-        }
+        } //? bu metodu neden update e delete falan koyuyuyoruz ?//
     }
 
     private List<Car> filterCarsByMaintenanceState(boolean includeMaintenance) {
+        // includeMaintenance ; bakımda olanları dahil edeyim mi diyor
+        //true ise hepsini getir
         if (includeMaintenance) {
             return repository.findAll();
         }
-
+        // false ise maintenance ı çıkarıp diğerlerini getiricek
         return repository.findAllByStateIsNot(State.MAINTENANCE);
     }
-    /*
+
+      /*
 
     @Override
     public List<GetAllCarsResponse> getAll() {

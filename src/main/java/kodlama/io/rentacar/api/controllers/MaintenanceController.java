@@ -4,7 +4,7 @@ import kodlama.io.rentacar.business.abstracts.MaintenanceService;
 import kodlama.io.rentacar.business.dto.requests.create.CreateMaintenanceRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateMaintenanceRequest;
 import kodlama.io.rentacar.business.dto.responses.create.CreateMaintenanceResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetAllMaintenancesResponse;
+import kodlama.io.rentacar.business.dto.responses.get.all.GetAllMaintenancesResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetMaintenanceResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateMaintenanceResponse;
 import lombok.AllArgsConstructor;
@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/maintenances")
 @AllArgsConstructor
+@RequestMapping("/api/maintenances")
+
 public class MaintenanceController {
     private final MaintenanceService service;
 
@@ -35,8 +36,8 @@ public class MaintenanceController {
         return service.add(request);
     }
 
-    @PutMapping("/return/{carId}")
-    public GetMaintenanceResponse returnCarFromMaintenance(@PathVariable int carId) {
+    @PutMapping("/return") //maintenance dan return et
+    public GetMaintenanceResponse returnCarFromMaintenance(@RequestParam int carId) {
         return service.returnCarFromMaintenance(carId);
     }
 
@@ -51,3 +52,5 @@ public class MaintenanceController {
         service.delete(id);
     }
 }
+//PathVariable: url de /cars7/ gibi görünür(*** daha kullanılabilir ***).
+//RequestParam: url de /cars?includeMaintenance=true gibi görünür.

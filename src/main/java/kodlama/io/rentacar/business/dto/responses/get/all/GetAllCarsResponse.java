@@ -1,4 +1,4 @@
-package kodlama.io.rentacar.business.dto.responses.get;
+package kodlama.io.rentacar.business.dto.responses.get.all;
 
 import kodlama.io.rentacar.entities.enums.State;
 import lombok.AllArgsConstructor;
@@ -17,4 +17,8 @@ public class GetAllCarsResponse {
     private String plate;
     private State state;
     private double dailyPrice;
+    private String modelName;
+    private String modelBrandName; // brandName i modeli vermeden gösteremiyor
+    //mapper ın çalışma mantığı bu modelden brandName i alıyor
+
 }

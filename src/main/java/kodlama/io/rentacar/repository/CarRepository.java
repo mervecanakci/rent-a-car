@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, Integer> {
     List<Car> findAllByStateIsNot(State state);
+    // state i hangi durumda istemiyorsan o durumu dışlayacak ve diğer durumları getirecek
+    //carManager.getAll da yapıyoruz bu filtreleme işlemini
 
 }
