@@ -12,22 +12,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rents")
-public class Rent {
+public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDateTime startingDate;//
-    private LocalDateTime endDate;
     private double dailyPrice;
-    private double totalPrice;//
-    private int rentedForDays; //
-    private boolean isCompleted;
-    private double startingKilometer;
-    private double returnKilometer;
-
+    private int rentedForDays;
+    private double totalPrice;
+    private LocalDateTime startDate;
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
-
 
 }

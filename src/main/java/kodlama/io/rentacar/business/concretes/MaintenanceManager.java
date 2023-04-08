@@ -71,8 +71,8 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public CreateMaintenanceResponse add(CreateMaintenanceRequest request) {
-        checkIfCarUnderMaintenance(request.getCarId()); // araç zaten bakımda mı?
-        checkCarAvailabilityForMaintenance(request.getCarId()); //kirada olan araç bakıma gidemez
+        checkIfCarUnderMaintenance(request); // araç zaten bakımda mı?
+        checkCarAvailabilityForMaintenance(request); //kirada olan araç bakıma gidemez
         Maintenance maintenance = mapper.map(request, Maintenance.class);
         maintenance.setId(0);
         maintenance.setCompleted(false);
@@ -123,17 +123,17 @@ public class MaintenanceManager implements MaintenanceService {
         }
     }
 
-    private void checkIfCarUnderMaintenance(int carId) {
+    private void checkIfCarUnderMaintenance(CreateMaintenanceRequest request) {
         // aracın bakımda olduğu durumu kontrol ediyor
 
-        if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new RuntimeException("Araç şuanda bakımda!");
+        if (repository.existsByCarIdAndIsCompletedIsFalse(request.getCarId())) {
+            throw new RuntimeException("Araç şu anda bakımda!");
         }
     }
 
-    private void checkCarAvailabilityForMaintenance(int carId) {
+    private void checkCarAvailabilityForMaintenance(CreateMaintenanceRequest request) {
         // kirada olan araç bakıma gidemez
-        if (carService.getById(carId).getState().equals(State.RENTED)) {
+        if (carService.getById(request.getCarId()).getState().equals(State.RENTED)) {
             // carId den state bak; eğer state rented e eşitse hata mesajı gönder
             throw new RuntimeException("Araç kirada olduğu için bakıma alınamaz!");
         }

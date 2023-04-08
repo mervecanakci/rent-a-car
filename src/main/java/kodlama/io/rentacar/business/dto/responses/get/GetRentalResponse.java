@@ -9,15 +9,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetRentResponse {
+public class GetRentalResponse {
     private int id;
     private int carId;
-    private LocalDateTime startingDate;
-    private LocalDateTime endDate;
-    private double totalPrice;
+    private double dailyPrice;
     private int rentedForDays;
-    private boolean isCompleted;
-
-    private double startingKilometer;
-    private double returnKilometer;
+    private double totalPrice;
+    private LocalDateTime startDate;
 }
