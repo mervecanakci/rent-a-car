@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/rentals")
 public class RentalsController {
     private final RentalService service;
+
     @GetMapping
     public List<GetAllRentalsResponse> getAll() {
         return service.getAll();
@@ -40,7 +41,7 @@ public class RentalsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable int id){
         service.delete(id);
     }
 }

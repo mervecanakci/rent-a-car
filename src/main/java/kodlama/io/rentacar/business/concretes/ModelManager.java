@@ -46,7 +46,6 @@ public class ModelManager implements ModelService {
 
     @Override
     public CreateModelResponse add(CreateModelRequest request) {
-        checkIfModelExistsByName(request.getName());
         Model model = mapper.map(request, Model.class); //requestten geleni mapledik
         model.setId(0); //yeni bir tane oluştur create anlamında date base i 1 den başlat
         //dto kaynaklı bu gerekli diğer id ile karıştırabilir
@@ -81,14 +80,8 @@ public class ModelManager implements ModelService {
     }
 
     private void checkIfModelExists(int id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Böyle bir model mevcut değil.");
-        }
-    }
-
-    private void checkIfModelExistsByName(String name) {
-        if (repository.existsByNameIgnoreCase(name)) {
-            throw new RuntimeException("Böyle bir model sistemde kayıtlı!");
+        if(!repository.existsById(id)){
+            throw new RuntimeException("Böyle bir model bulunamadı!");
         }
     }
 }

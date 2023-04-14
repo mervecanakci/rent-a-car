@@ -36,7 +36,7 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarResponse getById(int id) {
-        checkIfCarExistsById(id);
+        checkIfCarExists(id);
         Car car = repository.findById(id).orElseThrow();
         GetCarResponse response = mapper.map(car, GetCarResponse.class);
 
@@ -53,10 +53,9 @@ public class CarManager implements CarService {
 
         return response;
     }
-
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest request) {
-        checkIfCarExistsById(id);
+        checkIfCarExists(id);
         Car car = mapper.map(request, Car.class);
         car.setId(id);
         repository.save(car);
@@ -64,29 +63,27 @@ public class CarManager implements CarService {
 
         return response;
     }
-
     @Override
     public void delete(int id) {
-        checkIfCarExistsById(id);
+        checkIfCarExists(id);
         repository.deleteById(id);
     }
 
     @Override
     public void changeState(int carId, State state) {
-//        checkIfCarExists(carId);
         Car car = repository.findById(carId).orElseThrow();
         car.setState(state);
         repository.save(car);
-
     }
 
-    @Override
+
+  /*  @Override
     public double getDailyPrice(int carId) {
    return repository.findById(carId).get().getDailyPrice();
 
-    }
+    } */
 
-    private void checkIfCarExistsById(int id) {
+    private void checkIfCarExists(int id) {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Böyle bir araç bulunamadı!");
         } //? bu metodu neden update e delete falan koyuyuyoruz ?//
