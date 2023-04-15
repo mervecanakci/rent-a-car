@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UpdateInvoiceResponse {
     private int id;
-    private int carId;
     private String cardHolder;
     private String modelName;
     private String brandName;

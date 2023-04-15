@@ -22,6 +22,5 @@ public interface CarService {
     void delete(int id);
     void changeState(int carId, State state);
     // aracın durumunu değiştiricek
-    double getDailyPrice(int carId);
 
 }

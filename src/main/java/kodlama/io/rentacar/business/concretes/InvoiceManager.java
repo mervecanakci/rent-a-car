@@ -13,8 +13,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class InvoiceManager implements InvoiceService {
@@ -45,7 +45,6 @@ public class InvoiceManager implements InvoiceService {
     public CreateInvoiceResponse add(CreateInvoiceRequest request) {
         Invoice invoice = mapper.map(request, Invoice.class);
         invoice.setId(0);
-        invoice.setRentedAt(LocalDateTime.now());
         invoice.setTotalPrice(getTotalPrice(invoice));
         repository.save(invoice);
         CreateInvoiceResponse response = mapper.map(invoice, CreateInvoiceResponse.class);
@@ -75,9 +74,10 @@ public class InvoiceManager implements InvoiceService {
         return invoice.getDailyPrice() * invoice.getRentedForDays();
     }
 
-    private void checkIfInvoiceExists(int id) {
-        if (!repository.existsById(id)) {
+    private void checkIfInvoiceExists(int id){
+        if(!repository.existsById(id)){
             throw new RuntimeException("Fatura bilgisi bulunamadı.");
         }
     }
+
 }
