@@ -7,5 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateRentalPaymentRequest extends PaymentRequest {
+    private String cardNumber;
+    private String cardHolder;
+    private int cardExpirationYear;
+    private int cardExpirationMonth;
+    private String cardCvv;
     private double price;
-}
+}//

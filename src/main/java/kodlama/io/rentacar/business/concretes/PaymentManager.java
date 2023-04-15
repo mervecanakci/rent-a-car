@@ -45,7 +45,7 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public CreatePaymentResponse add(CreatePaymentRequest request) {
-        checkIfCardExists(request.getCardNumber());
+        checkIfCardExists(request);
         Payment payment = mapper.map(request, Payment.class);
         payment.setId(0);
         repository.save(payment);
@@ -57,7 +57,7 @@ public class PaymentManager implements PaymentService {
     @Override
     public UpdatePaymentResponse update(int id, UpdatePaymentRequest request) {
         checkIfPaymentExists(id);
-        Payment payment = mapper.map(request,Payment.class);
+        Payment payment = mapper.map(request, Payment.class);
         payment.setId(id);
         repository.save(payment);
         UpdatePaymentResponse response = mapper.map(payment, UpdatePaymentResponse.class);
@@ -75,38 +75,38 @@ public class PaymentManager implements PaymentService {
     public void processRentalPayment(CreateRentalPaymentRequest request) {
         checkIfPaymentIsValid(request);
         Payment payment = repository.findByCardNumber(request.getCardNumber());
-        checkIfBalanceIdEnough(payment.getBalance(), request.getPrice());
+        checkIfBalanceIsEnough(request.getPrice(), payment.getBalance());
         posService.pay(); // fake pos service
         payment.setBalance(payment.getBalance() - request.getPrice());
         repository.save(payment);
     }
 
-    private void checkIfPaymentExists(int id){
-        if(!repository.existsById(id)){
+    private void checkIfPaymentExists(int id) {
+        if (!repository.existsById(id)) {
             throw new RuntimeException("Ödeme bilgisi bulunamadı.");
         }
     }
 
-    private void checkIfBalanceIdEnough(double balance, double price) {
-        if( balance < price){
+    private void checkIfBalanceIsEnough(double price, double balance) {
+        if (balance < price) {
             throw new RuntimeException("Yetersiz bakiye.");
         }
     }
 
-    private void checkIfCardExists(String cardNumber){
-        if(repository.existsByCardNumber(cardNumber)){
+    private void checkIfCardExists(CreatePaymentRequest request) {
+        if (repository.existsByCardNumber(request.getCardNumber())) {
             throw new RuntimeException("Kart numarası zaten kayıtlı.");
         }
     }
 
     private void checkIfPaymentIsValid(CreateRentalPaymentRequest request) {
-        if(!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
+        if (!repository.existsByCardNumberAndCardHolderAndCardExpirationYearAndCardExpirationMonthAndCardCvv(
                 request.getCardNumber(),
                 request.getCardHolder(),
                 request.getCardExpirationYear(),
                 request.getCardExpirationMonth(),
                 request.getCardCvv()
-        )){
+        )) {
             throw new RuntimeException("Kart bilgileriniz hatalı.");
         }
     }
