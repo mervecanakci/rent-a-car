@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
     //Rent findByCarIdIsCompletedIsFalse(int carId);
-   // boolean existsByCarIdAndIsCompletedIsFalse(int carId);
-
+    // boolean existsByCarIdAndIsCompletedIsFalse(int carId);
 
 
 }

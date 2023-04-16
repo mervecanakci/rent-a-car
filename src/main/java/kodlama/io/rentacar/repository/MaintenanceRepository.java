@@ -4,10 +4,10 @@ import kodlama.io.rentacar.entities.concretes.Maintenance;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Integer> {
-      // @Nonnull
-     // Maintenance findById(int id);
-      Maintenance findMaintenanceByCarIdAndIsCompletedFalse(int carId);
-  //  Maintenance findByCarIdAndIsCompletedIsFalse(int carId);
+    // @Nonnull
+    // Maintenance findById(int id);
+    Maintenance findMaintenanceByCarIdAndIsCompletedFalse(int carId);
+    //  Maintenance findByCarIdAndIsCompletedIsFalse(int carId);
 
     // gidecek tablolara bakıcak; carId ve isCompleted false ise
     // onu getirecek - yoksa zaten sorun yok -

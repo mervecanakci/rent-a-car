@@ -25,7 +25,9 @@ public class Invoice {
     private double totalPrice;
     private int rentedForDays;
     private LocalDateTime rentedAt;
-
+  //  @ManyToOne
+  //  @JoinColumn(name = "customer_id")
+ //   private Customer customer;
 
 
 }

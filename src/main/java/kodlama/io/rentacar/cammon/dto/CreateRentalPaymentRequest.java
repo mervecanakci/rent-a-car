@@ -1,7 +1,9 @@
 package kodlama.io.rentacar.cammon.dto;
 
 import kodlama.io.rentacar.business.dto.requests.PaymentRequest;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
