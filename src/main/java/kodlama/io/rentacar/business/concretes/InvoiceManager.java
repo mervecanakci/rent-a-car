@@ -75,6 +75,4 @@ public class InvoiceManager implements InvoiceService {
     private double getTotalPrice(Invoice invoice) {
         return invoice.getDailyPrice() * invoice.getRentedForDays();
     }
-
-
 }

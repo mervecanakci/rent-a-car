@@ -2,9 +2,9 @@ package kodlama.io.rentacar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-@RestControllerAdvice
+import org.springframework.cache.annotation.EnableCaching;
+@EnableCaching
+//@RestControllerAdvice
 @SpringBootApplication //Configuration
 public class RentACarApplication {
 

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class GetAllBrandsResponse {
     private int id;
     private String name;
+    //private List<GetAllModelsResponse> models;
 
 }

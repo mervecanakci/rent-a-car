@@ -62,17 +62,19 @@ public class RentalManager implements RentalService {
         rental.setTotalPrice(getTotalPrice(rental));
         rental.setStartDate(LocalDateTime.now());
 
-        // Payment
+        // Create Payment
         CreateRentalPaymentRequest paymentRequest = new CreateRentalPaymentRequest();
         mapper.map(request.getPaymentRequest(), paymentRequest);
         paymentRequest.setPrice(getTotalPrice(rental));
         paymentService.processRentalPayment(paymentRequest);
 
         repository.save(rental);
-        carService.changeState(rental.getCar().getId(), State.RENTED);
+        carService.changeState(request.getCarId(), State.RENTED);
         CreateRentalResponse response = mapper.map(rental, CreateRentalResponse.class);
 
-        // Invoice
+        // Create Invoice
+        // Car car = mapper.map(carService.getById(request.getCarId()), Car.class);
+        // rental.setCar(car);
         CreateInvoiceRequest invoiceRequest = new CreateInvoiceRequest();
         createInvoiceRequest(request, invoiceRequest, rental);
         invoiceService.add(invoiceRequest);
@@ -104,8 +106,6 @@ public class RentalManager implements RentalService {
         return rental.getDailyPrice() * rental.getRentedForDays();
     }
 
-
-
     private void createInvoiceRequest(CreateRentalRequest request, CreateInvoiceRequest invoiceRequest, Rental rental) {
         GetCarResponse car = carService.getById(request.getCarId());
 
@@ -113,16 +113,11 @@ public class RentalManager implements RentalService {
         invoiceRequest.setModelName(car.getModelName());
         invoiceRequest.setBrandName(car.getModelBrandName());
         invoiceRequest.setDailyPrice(request.getDailyPrice());
-        invoiceRequest.setRentedForDays(request.getRentedForDays());
-        invoiceRequest.setCardHolder(request.getPaymentRequest().getCardHolder());
         invoiceRequest.setPlate(car.getPlate());
+        invoiceRequest.setCardHolder(request.getPaymentRequest().getCardHolder());
         invoiceRequest.setModelYear(car.getModelYear());
+        invoiceRequest.setRentedForDays(request.getRentedForDays());
     }
 }
-/*
 
-        3. Kirada veya bakımda olan bir araç kiralanamamalı.
-        4. totalPrice alanı sadece okunabilmelidir.
-        5. Kiradan dönen aracın durumu (rental delete işlemi ile) güncellenmelidir.
-        6. Kiralama nesnesinde olması gereken özellikler: id, carId, dailyPrice, rentedForDays, totalPrice, startDate.
-*/
+

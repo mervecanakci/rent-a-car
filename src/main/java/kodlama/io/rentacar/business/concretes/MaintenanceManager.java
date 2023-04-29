@@ -50,10 +50,10 @@ public class MaintenanceManager implements MaintenanceService {
     @Override
     public GetMaintenanceResponse returnCarFromMaintenance(int carId) {
         rules.checkIfCarIsNotUnderMaintenance(carId);
-        Maintenance maintenance = repository.findMaintenanceByCarIdAndIsCompletedFalse(carId);
+        Maintenance maintenance = repository.findByCarIdAndIsCompletedIsFalse(carId);
         maintenance.setCompleted(true);
         maintenance.setEndDate(LocalDateTime.now());
-        repository.save(maintenance);
+        repository.save(maintenance); // Update
         carService.changeState(carId, State.AVAILABLE);
         GetMaintenanceResponse response = mapper.map(maintenance, GetMaintenanceResponse.class);
 
@@ -94,137 +94,10 @@ public class MaintenanceManager implements MaintenanceService {
         repository.deleteById(id);
     }
 
-
     private void makeCarAvailableIfIsCompletedFalse(int id) {
         int carId = repository.findById(id).get().getCar().getId();
         if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
             carService.changeState(carId, State.AVAILABLE);
         }
     }
-
-
-  /*
-
-
-    @Override
-    public List<GetAllMaintenancesResponse> getAll() {
-        List<Maintenance> maintenances = repository.findAll();
-        List<GetAllMaintenancesResponse> response = maintenances
-                .stream()
-                .map(maintenance -> mapper.map(maintenance, GetAllMaintenancesResponse.class))
-                .toList();
-
-        return response;
-    }
-
-    @Override
-    public GetMaintenanceResponse getById(int id) {
-        checkIfMaintenanceExists(id);
-        Maintenance maintenance = repository.findById(id).orElseThrow(); //null
-        GetMaintenanceResponse response = mapper.map(maintenance, GetMaintenanceResponse.class);
-
-        return response;
-    }
-
-    @Override
-    public GetMaintenanceResponse returnCarFromMaintenance(int carId) {
-        // aracın bakımdan dönmesi
-
-        checkIfCarIsNotUnderMaintenance(carId);
-        // araç bakımda değil
-        // aracın bakımda olmadığı durumu kontrol ediyor
-
-        Maintenance maintenance = repository.findByCarIdAndIsCompletedIsFalse(carId);
-        //repository deki sorguyu kullandık
-
-        maintenance.setCompleted(true);
-        // sorgudan getiricek carId den gelene göre aracın bakım durumunu true yapıcak
-
-        maintenance.setEndDate(LocalDateTime.now());
-        repository.save(maintenance); // Update
-        carService.changeState(carId, State.AVAILABLE);
-        // araç bakımdan döndüğü için artık available durumda
-
-        GetMaintenanceResponse response = mapper.map(maintenance, GetMaintenanceResponse.class);
-
-        return response;
-    }
-
-    @Override
-    public CreateMaintenanceResponse add(CreateMaintenanceRequest request) {
-        checkIfCarUnderMaintenance(request); // araç zaten bakımda mı?
-        checkCarAvailabilityForMaintenance(request); //kirada olan araç bakıma gidemez
-        Maintenance maintenance = mapper.map(request, Maintenance.class);
-        maintenance.setId(0);
-        maintenance.setCompleted(false);
-        maintenance.setStartDate(LocalDateTime.now());
-        maintenance.setEndDate(null);
-        repository.save(maintenance);
-        carService.changeState(request.getCarId(), State.MAINTENANCE);
-        CreateMaintenanceResponse response = mapper.map(maintenance, CreateMaintenanceResponse.class);
-
-        return response;
-    }
-
-    @Override
-    public UpdateMaintenanceResponse update(int id, UpdateMaintenanceRequest request) {
-        checkIfMaintenanceExists(id); // zaten bakımda olmayan araç update edilemez
-        Maintenance maintenance = mapper.map(request, Maintenance.class);
-        maintenance.setId(id);
-        repository.save(maintenance);
-        UpdateMaintenanceResponse response = mapper.map(maintenance, UpdateMaintenanceResponse.class);
-
-        return response;
-    }
-
-    @Override
-    public void delete(int id) {
-        checkIfMaintenanceExists(id);
-        //   int carId = repository.findById(id).get().getCar().getId();
-        // checkIfCarIsNotUnderMaintenance(carId); // bakımda mı değil mi kontrols
-        makeCarAvailableIfIsCompletedFalse(id);
-        // carService.changeState(carId, State.AVAILABLE);
-        repository.deleteById(id);
-    }
-
-
-    private void checkIfMaintenanceExists(int id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Böyle bir bakım bilgisine ulaşılamadı!");
-        }
-
-    }
-
-    private void checkIfCarIsNotUnderMaintenance(int carId) {
-        // aracın bakımda olmadığı durumu kontrol ediyor
-
-        if (!repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new RuntimeException("Bakımda böyle bir araç bulunamadı!");
-
-        }
-    }
-
-    private void checkIfCarUnderMaintenance(CreateMaintenanceRequest request) {
-        // aracın bakımda olduğu durumu kontrol ediyor
-
-        if (repository.existsByCarIdAndIsCompletedIsFalse(request.getCarId())) {
-            throw new RuntimeException("Araç şu anda bakımda!");
-        }
-    }
-
-    private void checkCarAvailabilityForMaintenance(CreateMaintenanceRequest request) {
-        // kirada olan araç bakıma gidemez
-        if (carService.getById(request.getCarId()).getState().equals(State.RENTED)) {
-            // carId den state bak; eğer state rented e eşitse hata mesajı gönder
-            throw new RuntimeException("Araç kirada olduğu için bakıma alınamaz!");
-        }
-    }
-
-    private void makeCarAvailableIfIsCompletedFalse(int id){
-        int carId = repository.findById(id).get().getCar().getId();
-        if(repository.existsByCarIdAndIsCompletedIsFalse(carId)){
-            carService.changeState(carId, State.AVAILABLE);
-        }
-    }
-    */
 }

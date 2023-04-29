@@ -16,4 +16,10 @@ public class CarBusinessRules {
             throw new BusinessException(Messages.Car.NotExists);
         } //? bu metodu neden update e delete falan koyuyuyoruz ?//
     }
+
+    public void checkIfCarExistsByPlate(String plate) {
+        if (repository.existsByPlate(plate)) {
+            throw new BusinessException(Messages.Car.PlateExists);
+        }
+    }
 }

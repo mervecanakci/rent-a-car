@@ -24,14 +24,10 @@ public class CarManager implements CarService {
     private final ModelMapper mapper;
     private final CarBusinessRules rules;
 
-
     @Override
-    public List<GetAllCarsResponse> getAll(boolean includeMaintenance) {
+    public List<GetAllCarsResponse> getAll(boolean includeMaintenance) {// e-commerce
         List<Car> cars = filterCarsByMaintenanceState(includeMaintenance);
-        List<GetAllCarsResponse> response = cars
-                .stream()
-                .map(car -> mapper.map(car, GetAllCarsResponse.class))
-                .toList();
+        List<GetAllCarsResponse> response = cars.stream().map(car -> mapper.map(car, GetAllCarsResponse.class)).toList();
 
         return response;
     }
@@ -41,12 +37,14 @@ public class CarManager implements CarService {
         rules.checkIfCarExists(id);
         Car car = repository.findById(id).orElseThrow();
         GetCarResponse response = mapper.map(car, GetCarResponse.class);
+//        response.setBrandName(car.getModel().getBrand().getName());
 
         return response;
     }
 
     @Override
     public CreateCarResponse add(CreateCarRequest request) {
+        rules.checkIfCarExistsByPlate(request.getPlate());
         Car car = mapper.map(request, Car.class);
         car.setId(0);
         car.setState(State.AVAILABLE);
@@ -80,14 +78,6 @@ public class CarManager implements CarService {
         repository.save(car);
     }
 
-
-  /*  @Override
-    public double getDailyPrice(int carId) {
-   return repository.findById(carId).get().getDailyPrice();
-
-    } */
-
-
     private List<Car> filterCarsByMaintenanceState(boolean includeMaintenance) {
         // includeMaintenance ; bakımda olanları dahil edeyim mi diyor
         //true ise hepsini getir
@@ -97,19 +87,4 @@ public class CarManager implements CarService {
         // false ise maintenance ı çıkarıp diğerlerini getiricek
         return repository.findAllByStateIsNot(State.MAINTENANCE);
     }
-
-      /*
-
-    @Override
-    public List<GetAllCarsResponse> getAll() {
-        List<Car> cars = repository.findAll();
-        List<GetAllCarsResponse> response = cars
-                .stream()//map diye bir fonksiyon kullanmamızı sağlıyor
-                .map(car -> mapper.map(car, GetAllCarsResponse.class))
-                //her bir brand i bir tane responsa çeviricek sanırım
-                .toList();
-
-        return response;
-    }
-    */
 }

@@ -83,11 +83,4 @@ public class PaymentManager implements PaymentService {
         payment.setBalance(payment.getBalance() - request.getPrice());
         repository.save(payment);
     }
-
-
-
-
-
-
-
 }

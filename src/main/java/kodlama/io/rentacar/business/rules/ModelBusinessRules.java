@@ -10,9 +10,16 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class ModelBusinessRules {
     private final ModelRepository repository;
-    public void checkIfModelExists(int id) {
+
+    public void checkIfModelExistsById(int id) {
         if (!repository.existsById(id)) {
             throw new BusinessException(Messages.Model.NotExists);
+        }
+    }
+
+    public void checkIfModelExistsByName(String name) {
+        if (repository.existsByNameIgnoreCase(name)) {
+            throw new BusinessException(Messages.Model.Exists);
         }
     }
 

@@ -18,15 +18,15 @@ public class MaintenanceBusinessRules {
         }
     }
 
-    public void checkIfCarUnderMaintenance(int carId) {
-        if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
-            throw new BusinessException(Messages.Maintenance.CarExists);
-        }
-    }
-
     public void checkIfCarIsNotUnderMaintenance(int carId) {
         if (!repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
             throw new BusinessException(Messages.Maintenance.CarNotExists);
+        }
+    }
+
+    public void checkIfCarUnderMaintenance(int carId) {
+        if (repository.existsByCarIdAndIsCompletedIsFalse(carId)) {
+            throw new BusinessException(Messages.Maintenance.CarExists);
         }
     }
 

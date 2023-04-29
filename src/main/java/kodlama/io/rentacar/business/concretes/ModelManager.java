@@ -39,7 +39,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public GetModelResponse getById(int id) {
-        rules.checkIfModelExists(id);
+        rules.checkIfModelExistsById(id);
         Model model = repository.findById(id).orElseThrow();
         GetModelResponse response = mapper.map(model, GetModelResponse.class);
 
@@ -48,6 +48,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public CreateModelResponse add(CreateModelRequest request) {
+        rules.checkIfModelExistsByName(request.getName());
         Model model = mapper.map(request, Model.class); //requestten geleni mapledik
         model.setId(0); //yeni bir tane oluştur create anlamında date base i 1 den başlat
         //dto kaynaklı bu gerekli diğer id ile karıştırabilir
@@ -66,7 +67,7 @@ public class ModelManager implements ModelService {
         // }
         // ! ctrl+alt+m  = "checkIfModelExistsById metodunu oluşturdu  !//
 
-        rules.checkIfModelExists(id);
+        rules.checkIfModelExistsById(id);
         Model model = mapper.map(request, Model.class);
         model.setId(id);
         repository.save(model);
@@ -77,7 +78,7 @@ public class ModelManager implements ModelService {
 
     @Override
     public void delete(int id) {
-        rules.checkIfModelExists(id);
+        rules.checkIfModelExistsById(id);
         repository.deleteById(id);
     }
 

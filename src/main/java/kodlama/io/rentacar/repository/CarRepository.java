@@ -11,4 +11,7 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     // state i hangi durumda istemiyorsan o durumu dışlayacak ve diğer durumları getirecek
     //carManager.getAll da yapıyoruz bu filtreleme işlemini
 
+    boolean existsByPlate(String plate);
+
+
 }

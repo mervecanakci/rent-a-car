@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class BrandBusinessRules {
     private final BrandRepository repository;
 
-    public void checkIfBrandExists(int id) {
+    public void checkIfBrandExistsById(int id) {
         if (!repository.existsById(id)) throw new BusinessException(Messages.Brand.NotExists);
     }
 
